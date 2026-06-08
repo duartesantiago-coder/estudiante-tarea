@@ -20,7 +20,8 @@
                     'buttonText' => 'Actualizar estudiante',
                     'estudiante' => $estudiante,
                 ])
-            </div>
+                
+            </div> 
         </div>
     </div>
 @endsection
