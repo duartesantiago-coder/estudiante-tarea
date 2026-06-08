@@ -1,25 +1,37 @@
-@extends('layouts.app') 
+@extends('layouts.form')
+
+@section('title', 'Agregar Estudiante')
+@section('header', 'Agregar Estudiante')
 
 @section('content')
-    <div class="px-4 py-6 sm:px-0">
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">Agregar estudiante</h1>
-                <p class="text-gray-600 mt-1">Completa el formulario para registrar un estudiante nuevo.</p>
-            </div>
-            <a href="{{ route('estudiantes.index') }}" class="bg-gray-600 text-white hover:bg-gray-700 px-4 py-2 rounded-md text-sm font-medium">
-                Volver al listado
-            </a>
-        </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario de Registro</h3>
+                </div>
 
-        <div class="bg-white shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 sm:p-6">
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>¡Error!</strong> Por favor revisa los errores abajo.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
                 @include('estudiantes._form', [
                     'action' => route('estudiantes.store'),
                     'method' => 'POST',
-                    'buttonText' => 'Guardar estudiante',
+                    'buttonText' => 'Guardar Estudiante',
                     'estudiante' => null,
                 ])
+
+                <div class="card-footer">
+                    <a href="{{ route('estudiantes.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver al Listado
+                    </a>
+                </div>
             </div>
         </div>
     </div>

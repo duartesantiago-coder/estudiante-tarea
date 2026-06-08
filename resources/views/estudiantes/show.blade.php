@@ -1,44 +1,64 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Ver Estudiante')
+@section('header', 'Detalle del Estudiante')
 
 @section('content')
-    <div class="px-4 py-6 sm:px-0">
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">Datos estudiante</h1>
-                <p class="text-gray-600 mt-1">Visualiza los datos del estudiante seleccionado.</p>
-            </div>
-            <a href="{{ route('estudiantes.index') }}" class="bg-gray-600 text-white hover:bg-gray-700 px-4 py-2 rounded-md text-sm font-medium">
-                Volver al listado
-            </a>
-        </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Información del Estudiante</h3>
+                </div>
 
-        <div class="bg-white shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 sm:p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h2 class="text-lg font-medium text-gray-900">Nombre completo</h2>
-                        <p class="mt-1 text-sm text-gray-500">{{ $estudiante->nombre }} {{ $estudiante->apellido }}</p>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-medium text-gray-900">DNI</h2>
-                        <p class="mt-1 text-sm text-gray-500">{{ $estudiante->dni }}</p>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-medium text-gray-900">Fecha de nacimiento</h2>
-                        <p class="mt-1 text-sm text-gray-500">{{ \Carbon\Carbon::parse($estudiante->fecha_nacimiento)->format('d/m/Y') }}</p> 
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-medium text-gray-900">Foto de perfil</h2>
-                        @if($estudiante->foto_perfil)
-                            <img src="{{ asset('storage/' . $estudiante->foto_perfil) }}" alt="Foto de {{ $estudiante->nombre }}" class="w-32 h-32 object-cover rounded-md mt-1">
-                        @else
-                            <div class="w-32 h-32 bg-gray-200 rounded-md flex items-center justify-center mt-1">
-                                <span class="text-gray-500 text-sm">Sin foto</span>
-                            </div>
-                        @endif
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            @if($estudiante->foto_perfil)
+                                <img src="{{ asset('storage/' . $estudiante->foto_perfil) }}" alt="Foto de {{ $estudiante->nombre }}" class="img-circle" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #007bff;">
+                            @else
+                                <div class="img-circle" style="width: 150px; height: 150px; background-color: #e3e6e8; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 3px solid #007bff;">
+                                    <i class="fas fa-user" style="font-size: 60px; color: #999;"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-8">
+                            <table class="table table-sm table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 30%;">Nombre</th>
+                                        <td>{{ $estudiante->nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Apellido</th>
+                                        <td>{{ $estudiante->apellido }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>DNI</th>
+                                        <td>{{ $estudiante->dni }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Fecha de Nacimiento</th>
+                                        <td>{{ \Carbon\Carbon::parse($estudiante->fecha_nacimiento)->format('d/m/Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Registrado</th>
+                                        <td>{{ $estudiante->created_at->format('d/m/Y H:i') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                
+
+                <div class="card-footer">
+                    <a href="{{ route('estudiantes.edit', $estudiante) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{{ route('estudiantes.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </div>
             </div>
         </div>
     </div>
