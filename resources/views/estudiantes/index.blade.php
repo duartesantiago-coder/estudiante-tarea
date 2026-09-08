@@ -23,7 +23,7 @@
                             <a href="{{ route('estudiantes.create') }}" class="alert-link">Agregar uno</a>
                         </div>
                     @else
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap" id="tabladetalle">
                             <thead>
                                 <tr class="bg-light">
                                     <th>Foto</th>
@@ -31,6 +31,7 @@
                                     <th>Apellido</th>
                                     <th>DNI</th>
                                     <th>Fecha Nacimiento</th>
+                                    <th>Aula</th>
                                     <th>Creado</th>
                                     <th class="text-right">Acciones</th>
                                 </tr>
@@ -51,6 +52,7 @@
                                         <td>{{ $estudiante->apellido }}</td>
                                         <td>{{ $estudiante->dni }}</td>
                                         <td>{{ \Carbon\Carbon::parse($estudiante->fecha_nacimiento)->format('d/m/Y') }}</td>
+                                        <td><small class="text-muted">{{ $estudiante->aula->nombre ?? 'Sin aula' }}</small></td>
                                         <td><small class="text-muted">{{ $estudiante->created_at->format('d/m/Y H:i') }}</small></td>
                                         <td class="text-right">
                                             <a href="{{ route('estudiantes.show', $estudiante) }}" class="btn btn-xs btn-info" title="Ver">
@@ -77,3 +79,22 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#tabladetalle').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+                },
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true
+            });
+        });
+    </script>
+@endpush

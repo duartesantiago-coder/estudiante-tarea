@@ -1,1 +1,1 @@
-@extends('layouts.app', ['showSidebar' => true])
+@extends('layouts.retro')

@@ -1,9 +1,9 @@
-@extends('layouts.form')
+@extends('layouts.admin')
 
-@section('title', 'Editar Estudiante')
+@section('title', 'Editar Estudiante') 
 @section('header', 'Editar Estudiante')
 
-@section('content')
+@section('content') 
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card card-primary">
@@ -26,18 +26,8 @@
                     'buttonText' => 'Actualizar Estudiante',
                     'estudiante' => $estudiante,
                 ])
-<<<<<<< HEAD
                 
             </div> 
-=======
-
-                <div class="card-footer">
-                    <a href="{{ route('estudiantes.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Volver al Listado
-                    </a>
-                </div>
-            </div>
->>>>>>> Kamikaze
         </div>
     </div>
 @endsection

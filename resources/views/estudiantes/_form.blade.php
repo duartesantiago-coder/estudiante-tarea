@@ -40,6 +40,21 @@
             @enderror
         </div>
 
+        <div>
+            <label for="aula_id" class="block text-sm font-medium text-gray-700">Aula</label>
+            <select id="aula_id" name="aula_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 @error('aula_id') border-red-300 @enderror">
+                <option value="">Seleccionar aula</option>
+                @foreach($aulas as $aula)
+                    <option value="{{ $aula->id }}" {{ old('aula_id', $estudiante->aula_id ?? '') == $aula->id ? 'selected' : '' }}>
+                        {{ $aula->nombre }}
+                    </option>
+                @endforeach
+            </select>
+            @error('aula_id')
+                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
         <div class="sm:col-span-2">
             <label for="foto_perfil" class="block text-sm font-medium text-gray-700">Foto de perfil</label>
             <input id="foto_perfil" name="foto_perfil" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('foto_perfil') border-red-300 @enderror">
@@ -59,7 +74,7 @@
         @endif
 
         <div class="sm:col-span-2">
-            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button type="submit" class="btn btn-warning">
                 {{ $buttonText }}
             </button>
         </div>

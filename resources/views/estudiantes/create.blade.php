@@ -1,4 +1,4 @@
-@extends('layouts.form')
+@extends('layouts.admin')
 
 @section('title', 'Agregar Estudiante')
 @section('header', 'Agregar Estudiante')

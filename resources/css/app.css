@@ -1,11 +1,81 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+:root {
+    color-scheme: dark;
+    --bg-deep: #0f0a17;
+    --bg-mid: #171327;
+    --panel: rgba(20, 16, 31, 0.86);
+    --panel-soft: rgba(26, 20, 36, 0.94);
+    --line: rgba(255, 255, 255, 0.12);
+    --pink: #ff5fd2;
+    --purple: #8b5cf6;
+    --cyan: #67e8f9;
+    --gold: #fbbf24;
+    --text: #fdf2ff;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(255, 95, 210, 0.16), transparent 20%),
+        radial-gradient(circle at bottom right, rgba(103, 232, 249, 0.14), transparent 26%),
+        linear-gradient(135deg, var(--bg-deep), var(--bg-mid));
+    color: var(--text);
+}
+
+.anime-bg {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 50%, rgba(0, 0, 0, 0.18) 50%),
+        linear-gradient(90deg, rgba(255, 95, 210, 0.04), rgba(103, 232, 249, 0.02), rgba(255, 95, 210, 0.04));
+    background-size: 100% 4px, 6px 100%;
+}
+
+.retro-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 20px 60px rgba(12, 8, 18, 0.6);
+}
+
+.retro-shell {
+    background: linear-gradient(180deg, rgba(15, 10, 23, 0.86), rgba(20, 15, 25, 0.92));
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.18);
+}
+
+.retro-header {
+    background: linear-gradient(180deg, rgba(18, 14, 27, 0.96), rgba(24, 18, 35, 0.95));
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.retro-title {
+    font-family: "Orbitron", "Space Grotesk", sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.retro-card {
+    background: linear-gradient(180deg, rgba(27, 21, 38, 0.96), rgba(16, 12, 25, 0.96));
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.retro-sidebar a {
+    transition: all 0.2s ease;
+}
+
+.retro-sidebar a:hover {
+    background: linear-gradient(90deg, rgba(255, 95, 210, 0.18), rgba(103, 232, 249, 0.1));
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.retro-rail {
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+}
+
+.retro-glow {
+    box-shadow: 0 0 18px rgba(255, 95, 210, 0.22), inset 0 0 12px rgba(103, 232, 249, 0.12);
 }

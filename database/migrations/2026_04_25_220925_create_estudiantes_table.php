@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('dni')->unique();
             $table->date('fecha_nacimiento');
             $table->string('foto_perfil')->nullable();
+            $table->foreignId('aula_id')->nullable()->constrained('aulas')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -30,6 +31,10 @@ return new class extends Migration
         Schema::table('estudiantes', function (Blueprint $table) {
             if (Schema::hasColumn('estudiantes', 'foto_perfil')) { // Verificar si la columna 'foto_perfil' existe antes de eliminarla
                 $table->dropColumn('foto_perfil'); // Eliminar la columna 'foto_perfil'
+            }
+            if (Schema::hasColumn('estudiantes', 'aula_id')) {
+                $table->dropForeign('estudiantes_aula_id_foreign');
+                $table->dropColumn('aula_id');
             }
         });
         Schema::dropIfExists('estudiantes');

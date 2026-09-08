@@ -41,6 +41,10 @@
                                         <th>Fecha de Nacimiento</th>
                                         <td>{{ \Carbon\Carbon::parse($estudiante->fecha_nacimiento)->format('d/m/Y') }}</td>
                                     </tr>
+                                        <tr>
+                                            <th>Aula</th>
+                                            <td>{{ $estudiante->aula->nombre ?? 'Sin aula asignada' }}</td> 
+                                        </tr>   
                                     <tr>
                                         <th>Registrado</th>
                                         <td>{{ $estudiante->created_at->format('d/m/Y H:i') }}</td>

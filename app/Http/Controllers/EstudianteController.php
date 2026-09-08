@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEstudianteRequest;
-use App\Http\Requests\UpdateEstudianteRequest;
+use App\Models\Aula;
 use App\Models\Estudiante;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class EstudianteController extends Controller
@@ -14,9 +14,9 @@ class EstudianteController extends Controller
      */
     public function index()
     {
-        $estudiantes = Estudiante::orderBy('id', 'desc')->get();// Obtener todos los estudiantes ordenados por ID de forma descendente
+        $estudiantes = Estudiante::with('aula')->latest()->get();
 
-        return view('estudiantes.index', compact('estudiantes')); // Retornar la vista con la lista de estudiantes
+        return view('estudiantes.index', compact('estudiantes'));
     }
 
     /**
@@ -24,54 +24,74 @@ class EstudianteController extends Controller
      */
     public function create()
     {
-        return view('estudiantes.create'); // Retornar la vista para crear un nuevo estudiante
+        $aulas = Aula::orderBy('nombre')->get();
+
+        return view('estudiantes.create', compact('aulas'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEstudianteRequest $request) // Validar los datos de entrada utilizando StoreEstudianteRequest
+    public function store(Request $request)
     {
-        $data = $request->validated(); // Validar los datos de entrada utilizando StoreEstudianteRequest
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'string', 'max:255'],
+            'dni' => ['required', 'string', 'max:20', 'unique:estudiantes,dni'],
+            'fecha_nacimiento' => ['required', 'date'],
+            'aula_id' => ['nullable', 'exists:aulas,id'],
+            'foto_perfil' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+        ]);
 
-        if ($request->hasFile('foto_perfil')) { 
-            $data['foto_perfil'] = $request->file('foto_perfil')->store('estudiantes', 'public'); // Almacenar la foto de perfil en el disco 'public' dentro de la carpeta 'estudiantes'
+        if ($request->hasFile('foto_perfil')) {
+            $data['foto_perfil'] = $request->file('foto_perfil')->store('fotos_perfil', 'public');
         }
 
-        Estudiante::create($data); // Crear un nuevo estudiante con los datos validados
+        Estudiante::create($data);
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante creado exitosamente.'); // Redirigir a la lista de estudiantes con un mensaje de éxito
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante registrado correctamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Estudiante $estudiante) // Mostrar los detalles de un estudiante específico
+    public function show(Estudiante $estudiante)
     {
-        return view('estudiantes.show', compact('estudiante')); // Retornar la vista para mostrar los detalles de un estudiante específico
+        $estudiante->load('aula');
+
+        return view('estudiantes.show', compact('estudiante'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Estudiante $estudiante) // Retornar la vista para editar un estudiante específico, pasando el estudiante como variable a la vista
+    public function edit(Estudiante $estudiante)
     {
-        return view('estudiantes.edit', compact('estudiante')); // Retornar la vista para editar un estudiante específico, pasando el estudiante como variable a la vista
+        $aulas = Aula::orderBy('nombre')->get();
+
+        return view('estudiantes.edit', compact('estudiante', 'aulas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEstudianteRequest $request, Estudiante $estudiante) // Validar los datos de entrada utilizando UpdateEstudianteRequest
+    public function update(Request $request, Estudiante $estudiante)
     {
-        $data = $request->validated(); // Validar los datos de entrada utilizando UpdateEstudianteRequest
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'string', 'max:255'],
+            'dni' => ['required', 'string', 'max:20', 'unique:estudiantes,dni,' . $estudiante->id],
+            'fecha_nacimiento' => ['required', 'date'],
+            'aula_id' => ['nullable', 'exists:aulas,id'],
+            'foto_perfil' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+        ]);
 
         if ($request->hasFile('foto_perfil')) {
             if ($estudiante->foto_perfil && Storage::disk('public')->exists($estudiante->foto_perfil)) {
                 Storage::disk('public')->delete($estudiante->foto_perfil);
             }
 
-            $data['foto_perfil'] = $request->file('foto_perfil')->store('estudiantes', 'public');
+            $data['foto_perfil'] = $request->file('foto_perfil')->store('fotos_perfil', 'public');
         }
 
         $estudiante->update($data);
@@ -84,8 +104,8 @@ class EstudianteController extends Controller
      */
     public function destroy(Estudiante $estudiante)
     {
-        if ($estudiante->foto_perfil && Storage::disk('public')->exists($estudiante->foto_perfil)) { 
-            Storage::disk('public')->delete($estudiante->foto_perfil); 
+        if ($estudiante->foto_perfil && Storage::disk('public')->exists($estudiante->foto_perfil)) {
+            Storage::disk('public')->delete($estudiante->foto_perfil);
         }
 
         $estudiante->delete();
